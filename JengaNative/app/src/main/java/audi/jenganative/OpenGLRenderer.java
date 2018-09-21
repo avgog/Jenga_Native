@@ -64,28 +64,16 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer {
         GLES30.glEnable(GLES30.GL_CULL_FACE);
         GLES30.glEnable(GLES30.GL_BLEND);
         GLES30.glEnable(GLES30.GL_DEPTH_TEST);
-
         //GLES30.glBlendFunc(GLES30.GL_BLEND_SRC_ALPHA, GLES30.GL_ONE_MINUS_SRC_ALPHA);
 
         GLES30.glEnable(GLES30.GL_TEXTURE0);
 
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.block);
-
-        //Matrix mat = new Matrix();
-        //mat.postScale(1, -1);
-        //mat.postRotate(-180);
-
-        //Bitmap flippedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), mat, true);
-
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.blocktest);
         texture = new Texture(bitmap);
         GLES30.glActiveTexture(GLES30.GL_TEXTURE0);
         texture.bind();
 
-        resources.blockMeshData.createVertices();
         mesh = new Mesh(resources.blockMeshData);
-        String content = resources.blockMeshData.verticesUVToString();
-        Log.e("Vertices UV", content);
-        //mesh = createQuadMesh(); //temp
 
 
         shader = new DiffuseShader(resources.vertexShaderCode, resources.fragmentShaderCode);
@@ -121,40 +109,5 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer {
         isRendering = true;
         draw();
         isRendering = false;
-    }
-
-    public Mesh createQuadMesh(){
-        Vector3[] positions = {
-                new Vector3(0,0,0),
-                new Vector3(0, 1, 0),
-                new Vector3(1, 0, 0),
-                new Vector3(1, 1, 0)
-        };
-
-        short[] indices = {
-                0, 1, 2,
-                2, 1, 3
-        };
-
-        Vector3 forward = new Vector3(0, 1, 0);
-        Vector3[] normals = {
-                forward.copy(),
-                forward.copy(),
-                forward.copy(),
-                forward.copy()
-        };
-
-        Vector2[] uvs = {
-                new Vector2(0, 0),
-                new Vector2(1, 0),
-                new Vector2(0,1),
-                new Vector2(1, 1)
-        };
-
-        short[] uIndices = {0, 1, 2, 3};
-
-        MeshData data = new MeshData(positions, uvs, normals, indices, indices, indices);
-        data.createVertices();
-        return new Mesh(data);
     }
 }

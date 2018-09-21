@@ -12,102 +12,35 @@ import audi.jenganative.memory.BufferUtil;
  */
 
 public class MeshData {
-    private Vector3[] positions;
-    private Vector2[] uvs;
-    private Vector3[] normals;
-
-    private short[] indices;
-    private short[] uvIndices;
-    private short[] normalIndices;
-
     private Vertex[] vertices;
 
-    public MeshData(Vector3[] positions, Vector2[] uvs, Vector3[] normals, short indices[], short uvIndices[], short normalIndices[]){
-        this.positions = positions;
-        this.uvs = uvs;
-        this.normals = normals;
-        this.indices = indices;
-        this.uvIndices = uvIndices;
-        this.normalIndices = normalIndices;
+    private MeshData(Vertex[] vertices){
+        this.vertices = vertices;
     }
 
-    @Override
-    public String toString() {
-        String content = "";
-
-        content += "positions:\n " + BufferUtil.arrayToString(positions) + "\n";
-        content += "uvs:\n " + BufferUtil.arrayToString(uvs) + "\n";
-        content += "normals:\n " + BufferUtil.arrayToString(normals) + "\n";
-
-        content += "indices:\n " + BufferUtil.shortArrayToString(indices) + "\n";
-        content += "uvIndices:\n " + BufferUtil.shortArrayToString(uvIndices) + "\n";
-        content += "normalIndices:\n " + BufferUtil.shortArrayToString(normalIndices) + "\n";
-
-        return content;
-    }
-
-    public void createVertices(){
+    //create a meshdata instance (which ccntains vertices) with vector and index arrays
+    public static MeshData createFromArrays(Vector3[] positions, Vector2[] uvs, Vector3[] normals, short[] indices, short[] uvIndices, short[] normalIndices){
         final int vertexSize = indices.length;
-        final int uvIndexCount = uvIndices.length;
-        final int normalIndexCount = normalIndices.length;
+        Vertex[] vertices = new Vertex[vertexSize];
 
-
-        vertices = new Vertex[vertexSize];
-
-        //set positions
+        //create (full) vertices
         for(int i = 0; i < vertexSize; i++){
             short posIndex = indices[i];
-            vertices[i] = new Vertex(positions[posIndex]);
-        }
-
-        //set uvs
-        for(int i = 0; i < uvIndexCount; i++){
             short uvIndex = uvIndices[i];
-            //short vertIndex = indices[i];
-            short vertIndex = (short)i;
-
-            Vector2 uv = uvs[uvIndex];
-
-            vertices[vertIndex].uv = uv;
-        }
-
-        //set normals
-        for(int i = 0; i < normalIndexCount; i++) {
             short normalIndex = normalIndices[i];
-            Vector3 normal = normals[normalIndex];
 
-            short vertIndex = (short)i;
-            vertices[vertIndex].normal = normal;
+            vertices[i] = new Vertex(
+                    positions[posIndex],
+                    uvs[uvIndex],
+                    normals[normalIndex]
+            );
         }
 
+        return new MeshData(vertices);
     }
 
+    //get te vertices (contains position, uv and normal)
     public Vertex[] getVertices(){
-        if(vertices == null){
-            createVertices();
-        }
         return vertices;
-    }
-
-    public short[] getIndices(){
-        return indices;
-    }
-
-    //public String verticesToString()
-
-    public String verticesUVToString(){
-        String content = "{\n";
-
-        if(vertices == null){
-            return "null";
-        }
-
-        for(int i = 0; i < vertices.length; i++){
-            content += vertices[i].uv.toString() + ", \n";
-        }
-
-        content += "}";
-
-        return content;
     }
 }

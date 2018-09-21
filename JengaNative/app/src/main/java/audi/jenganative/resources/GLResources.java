@@ -23,7 +23,6 @@ public class GLResources {
         resources.fragmentShaderCode = FileUtil.loadTextFile(context, Constants.DIFFUSE_FRAGMENT_PATH);
 
         resources.blockMeshData = FileUtil.loadMesh(context, Constants.MESH_BLOCK_PATH);
-        resources.blockMeshData.createVertices();
 
         return resources;
     }

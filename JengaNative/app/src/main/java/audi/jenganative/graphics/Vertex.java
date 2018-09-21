@@ -21,9 +21,9 @@ public class Vertex {
         this.normal = normal;
     }
 
-    public Vertex(Vector3 position){
+    /*public Vertex(Vector3 position){
         this.position = position;
-    }
+    }*/
 
     public static float[] ToFloatArray(Vertex[] vertices){
         int vertCount = vertices.length;
