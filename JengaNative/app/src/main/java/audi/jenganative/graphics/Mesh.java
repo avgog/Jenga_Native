@@ -33,7 +33,13 @@ public class Mesh {
 
     public Mesh(MeshData data){
         Vertex[] vertices = data.getVertices();
-        short[] indices = data.getIndices();
+        //short[] indices = data.getIndices();
+
+        short[] indices = new short[vertices.length];
+
+        for(short i = 0; i < indices.length; i++){
+            indices[i] = i;
+        }
 
         size = vertices.length * Vertex.FLOAT_COUNT;
         indexCount = indices.length;
@@ -113,12 +119,14 @@ public class Mesh {
 
 
     public void drawInstance(){
-        if(indexCount > 0){
+        /*if(indexCount > 0){
             GLES30.glDrawElements(GLES30.GL_TRIANGLES, indexCount, GLES30.GL_UNSIGNED_SHORT, 0);
         }
         else{
             GLES30.glDrawArrays(GLES30.GL_TRIANGLES, 0, size);
-        }
+        }*/
+
+        GLES30.glDrawArrays(GLES30.GL_TRIANGLES, 0, size);
     }
 
     public int getVertexCount(){

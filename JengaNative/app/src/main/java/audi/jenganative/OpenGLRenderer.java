@@ -2,6 +2,7 @@ package audi.jenganative;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.opengl.GLES30;
 import android.opengl.GLSurfaceView;
 import android.util.Log;
@@ -15,9 +16,11 @@ import audi.jenganative.graphics.Mesh;
 import audi.jenganative.graphics.Texture;
 import audi.jenganative.graphics.renderers.BlockRenderer;
 import audi.jenganative.graphics.shaders.DiffuseShader;
+import audi.jenganative.math.Vector2;
 import audi.jenganative.math.Vector3;
 import audi.jenganative.resources.GLGameData;
 import audi.jenganative.resources.GLResources;
+import audi.jenganative.resources.MeshData;
 
 /**
  * Created by audi on 29-7-2018.
@@ -60,22 +63,30 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer {
         GLES30.glFrontFace(GLES30.GL_CCW);
         GLES30.glEnable(GLES30.GL_CULL_FACE);
         GLES30.glEnable(GLES30.GL_BLEND);
-        GLES30.glBlendFunc(GLES30.GL_BLEND_SRC_ALPHA, GLES30.GL_ONE_MINUS_SRC_ALPHA);
-        GLES30.glEnable(GLES30.GL_TEXTURE_2D);
+        GLES30.glEnable(GLES30.GL_DEPTH_TEST);
 
-        /*FloatBuffer buffer = FloatBuffer.allocate(4);
-        buffer.position(0);
-        buffer.put(0, 1);
-        buffer.put(1, 0);
-        buffer.put(2, 0);
-        buffer.put(3, 1);*/
+        //GLES30.glBlendFunc(GLES30.GL_BLEND_SRC_ALPHA, GLES30.GL_ONE_MINUS_SRC_ALPHA);
 
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.blocktest);
+        GLES30.glEnable(GLES30.GL_TEXTURE0);
+
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.block);
+
+        //Matrix mat = new Matrix();
+        //mat.postScale(1, -1);
+        //mat.postRotate(-180);
+
+        //Bitmap flippedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), mat, true);
 
         texture = new Texture(bitmap);
+        GLES30.glActiveTexture(GLES30.GL_TEXTURE0);
         texture.bind();
-        
+
+        resources.blockMeshData.createVertices();
         mesh = new Mesh(resources.blockMeshData);
+        String content = resources.blockMeshData.verticesUVToString();
+        Log.e("Vertices UV", content);
+        //mesh = createQuadMesh(); //temp
+
 
         shader = new DiffuseShader(resources.vertexShaderCode, resources.fragmentShaderCode);
 
@@ -110,5 +121,40 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer {
         isRendering = true;
         draw();
         isRendering = false;
+    }
+
+    public Mesh createQuadMesh(){
+        Vector3[] positions = {
+                new Vector3(0,0,0),
+                new Vector3(0, 1, 0),
+                new Vector3(1, 0, 0),
+                new Vector3(1, 1, 0)
+        };
+
+        short[] indices = {
+                0, 1, 2,
+                2, 1, 3
+        };
+
+        Vector3 forward = new Vector3(0, 1, 0);
+        Vector3[] normals = {
+                forward.copy(),
+                forward.copy(),
+                forward.copy(),
+                forward.copy()
+        };
+
+        Vector2[] uvs = {
+                new Vector2(0, 0),
+                new Vector2(1, 0),
+                new Vector2(0,1),
+                new Vector2(1, 1)
+        };
+
+        short[] uIndices = {0, 1, 2, 3};
+
+        MeshData data = new MeshData(positions, uvs, normals, indices, indices, indices);
+        data.createVertices();
+        return new Mesh(data);
     }
 }

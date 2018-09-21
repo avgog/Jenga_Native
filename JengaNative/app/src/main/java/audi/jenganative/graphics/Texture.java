@@ -46,14 +46,28 @@ public class Texture {
 
         bind();
 
+        //texture wrapping
+        //GLES30.glTexParameteri(GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_WRAP_S, GLES30.GL_REPEAT);
+        //GLES30.glTexParameteri(GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_WRAP_T, GLES30.GL_REPEAT);
+
+        //texture filtering
+        GLES30.glTexParameteri(GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_MIN_FILTER, GLES30.GL_NEAREST);
+        GLES30.glTexParameteri(GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_MAG_FILTER, GLES30.GL_LINEAR);
+
+        //mipmaps
+        //GLES30.glTexParameteri(GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_MIN_FILTER, GLES30.GL_LINEAR_MIPMAP_LINEAR);
+        //GLES30.glTexParameteri(GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_MAG_FILTER, GLES30.GL_LINEAR);
+
         GLUtils.texImage2D(GLES30.GL_TEXTURE_2D, 0, bitmap, 0);
+        //GLES30.glGenerateMipmap(GLES30.GL_TEXTURE_2D);
+        unbind();
     }
 
     public void bind(){
         GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, textureId[0]);
     }
 
-    /*public void unbind(){
-        GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, textureId[0]);
-    }*/
+    public void unbind(){
+        GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, 0);
+    }
 }

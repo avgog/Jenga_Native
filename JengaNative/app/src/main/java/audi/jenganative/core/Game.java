@@ -28,7 +28,7 @@ public class Game {
         for(int y = 0; y < Constants.TOWER_HEIGHT; y++){
             for(int x = 0; x < Constants.TOWER_WIDTH; x++){
                 Vector3 pos = new Vector3(0, y * blockSize.y, x * blockSize.z);
-                Transform transform = new Transform(pos, Quaternion.identity(), new Vector3(2, 2, 2));
+                Transform transform = new Transform(pos, Quaternion.identity(), new Vector3(1, 1, 1));
                 blocks.add(transform);
             }
         }
@@ -39,5 +39,6 @@ public class Game {
     public void update(){
         eulerX += Time.getDeltatime() * 20;
         blocks.get(0).setEulers(eulerX, 0, 0);
+        blocks.get(0).setPosition(2, 0, 1);
     }
 }

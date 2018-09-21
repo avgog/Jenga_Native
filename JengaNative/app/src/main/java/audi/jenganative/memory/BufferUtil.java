@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
+import java.util.ArrayList;
 import java.util.List;
 
 import audi.jenganative.math.Vector2;
@@ -102,5 +103,33 @@ public class BufferUtil {
         content += "}";
 
         return content;
+    }
+
+    public static Short[] incrementAllShorts(Short[] arr, short value){
+        for(int i = 0; i < arr.length; i++){
+            arr[i] = new Short((short)(arr[i].shortValue() + value));
+        }
+        return arr;
+    }
+
+    public static short[] createFlippedShortArray(short[] arr){
+        short[] flipped = new short[arr.length];
+
+        for(int i = 0; i < arr.length; i++){
+            flipped[i] = arr[arr.length - 1 - i];
+        }
+
+        return  flipped;
+    }
+
+
+    public static <T> List<T> createFlippedList(List<T> list){
+        List<T> copy = new ArrayList<T>();
+
+        for(int i = 0; i < list.size(); i++){
+            copy.add(list.get(list.size() - 1 - i));
+        }
+
+        return copy;
     }
 }

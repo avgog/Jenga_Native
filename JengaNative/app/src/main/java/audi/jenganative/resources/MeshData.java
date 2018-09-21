@@ -22,15 +22,13 @@ public class MeshData {
 
     private Vertex[] vertices;
 
-    MeshData(Vector3[] positions, Vector2[] uvs, Vector3[] normals, short indices[], short uvIndices[], short normalIndices[]){
+    public MeshData(Vector3[] positions, Vector2[] uvs, Vector3[] normals, short indices[], short uvIndices[], short normalIndices[]){
         this.positions = positions;
         this.uvs = uvs;
         this.normals = normals;
         this.indices = indices;
         this.uvIndices = uvIndices;
         this.normalIndices = normalIndices;
-
-        //Log.i("MeshData", toString());
     }
 
     @Override
@@ -49,23 +47,27 @@ public class MeshData {
     }
 
     public void createVertices(){
-        final int vertexSize = positions.length;
+        final int vertexSize = indices.length;
         final int uvIndexCount = uvIndices.length;
         final int normalIndexCount = normalIndices.length;
+
 
         vertices = new Vertex[vertexSize];
 
         //set positions
         for(int i = 0; i < vertexSize; i++){
-            vertices[i] = new Vertex(positions[i]);
+            short posIndex = indices[i];
+            vertices[i] = new Vertex(positions[posIndex]);
         }
 
         //set uvs
         for(int i = 0; i < uvIndexCount; i++){
             short uvIndex = uvIndices[i];
+            //short vertIndex = indices[i];
+            short vertIndex = (short)i;
+
             Vector2 uv = uvs[uvIndex];
 
-            short vertIndex = indices[i];
             vertices[vertIndex].uv = uv;
         }
 
@@ -74,7 +76,7 @@ public class MeshData {
             short normalIndex = normalIndices[i];
             Vector3 normal = normals[normalIndex];
 
-            short vertIndex = indices[i];
+            short vertIndex = (short)i;
             vertices[vertIndex].normal = normal;
         }
 
@@ -91,5 +93,21 @@ public class MeshData {
         return indices;
     }
 
+    //public String verticesToString()
 
+    public String verticesUVToString(){
+        String content = "{\n";
+
+        if(vertices == null){
+            return "null";
+        }
+
+        for(int i = 0; i < vertices.length; i++){
+            content += vertices[i].uv.toString() + ", \n";
+        }
+
+        content += "}";
+
+        return content;
+    }
 }

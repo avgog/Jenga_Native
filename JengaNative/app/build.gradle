@@ -9,7 +9,7 @@ android {
             storePassword 'geheim'
         }
     }
-    compileSdkVersion 26
+    compileSdkVersion 23
     project.archivesBaseName = "Jenga Native"
     defaultConfig {
         applicationId "audi.jenganative"
@@ -34,6 +34,7 @@ android {
     }
     productFlavors {
     }
+    buildToolsVersion '28.0.2'
 }
 
 android.applicationVariants.all { variant ->
@@ -44,6 +45,8 @@ android.applicationVariants.all { variant ->
 }
 
 dependencies {
+    implementation 'com.android.support:design:23.4.0'
+    implementation 'com.android.support:appcompat-v7:23.4.0'
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

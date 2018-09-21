@@ -45,4 +45,8 @@ public class Vertex {
 
         return array;
     }
+
+    public String toString(){
+        return "["+position.toString() + ", " + uv.toString() + ", " + normal.toString() +"]";
+    }
 }
