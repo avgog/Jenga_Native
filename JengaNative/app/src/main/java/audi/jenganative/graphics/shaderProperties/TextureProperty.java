@@ -9,19 +9,21 @@ import audi.jenganative.graphics.Texture;
  * Created by audi on 22-8-2018.
  */
 
-/*public class TextureProperty extends ShaderProperty<Texture> {
-    private int unitLocation;
-    public TextureProperty(int program, String name, int unitLocation){
-        super(program, name);
-        this.unitLocation = unitLocation;
+public class TextureProperty {
+    private int location;
+    private Texture texture;
+
+    public TextureProperty(int textureSlot){
+        location = GLES30.GL_TEXTURE0 + textureSlot;
+        GLES30.glEnable(location);
     }
 
-    @Override
-    protected void setUniform(int location, Texture value) {
-        GLES30.glUniform1i(location, unitLocation);
+    public void set(Texture texture) {
+        GLES30.glActiveTexture(location);
+        this.texture = texture;
     }
 
-    public void setUnitLocation(int unitLocation){
-        this.unitLocation = unitLocation;
+    public Texture get(){
+        return texture;
     }
-}*/
+}

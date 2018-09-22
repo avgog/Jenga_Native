@@ -1,22 +1,14 @@
 package audi.jenganative.resources;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.util.JsonReader;
 import android.util.Log;
-
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import audi.jenganative.graphics.Mesh;
-import audi.jenganative.graphics.Vertex;
 import audi.jenganative.math.Vector2;
 import audi.jenganative.math.Vector3;
 import audi.jenganative.memory.BufferUtil;

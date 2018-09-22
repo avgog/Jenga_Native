@@ -5,7 +5,7 @@ android {
         config {
             keyAlias 'JengaNativeKey'
             keyPassword 'geheim'
-            storeFile file('C:/Users/audi/Documents/AndroidKeys/jenga_native_release_key_small.keystore')
+            storeFile file('C:/Users/audiv/OneDrive/Documenten/Android Keys/jenga_native_release_key_small.keystore')
             storePassword 'geheim'
         }
     }
@@ -45,8 +45,8 @@ android.applicationVariants.all { variant ->
 }
 
 dependencies {
-    implementation 'com.android.support:design:23.4.0'
-    implementation 'com.android.support:appcompat-v7:23.4.0'
+    //implementation 'com.android.support:design:23.4.0'
+    //implementation 'com.android.support:appcompat-v7:23.4.0'
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

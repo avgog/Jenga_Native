@@ -68,7 +68,7 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer {
 
         GLES30.glEnable(GLES30.GL_TEXTURE0);
 
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.blocktest);
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.block);
         texture = new Texture(bitmap);
         GLES30.glActiveTexture(GLES30.GL_TEXTURE0);
         texture.bind();
