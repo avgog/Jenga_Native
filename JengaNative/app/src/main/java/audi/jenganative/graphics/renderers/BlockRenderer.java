@@ -9,6 +9,7 @@ import java.util.List;
 import audi.jenganative.components.Transform;
 import audi.jenganative.graphics.Camera;
 import audi.jenganative.graphics.Mesh;
+import audi.jenganative.graphics.shaderProperties.TextureProperty;
 import audi.jenganative.graphics.shaders.ColorShader;
 import audi.jenganative.graphics.shaders.DiffuseShader;
 import audi.jenganative.math.MathUtil;
@@ -28,37 +29,20 @@ public class BlockRenderer {
         this.shader = shader;
         this.mesh = mesh;
         this.camera = camera;
-
-        shader.bind();
-        //shader.getColor().set(new Vector4(1, 1, 1, 1));
-        shader.unbind();
-    }
-
-    private List<Vector4> colors = new ArrayList<>();
-
-    public void randomizeColor(int index){
-        while(index >= colors.size()){
-            float r = (float)Math.random();
-            float g = (float)Math.random();
-            float b = (float)Math.random();
-            colors.add(new Vector4(r, g, b, 1));
-        }
-
-        //shader.getColor().set(colors.get(index));
-
     }
 
     public void render(GLGameData data) {
         if(shader == null){
-            Log.e("BlockRenderer", "Shader is null");
+            //Log.e("BlockRenderer", "Shader is null");
             return;
         }
         if(mesh == null){
-            Log.e("BlockRenderer", "Mesh is null");
+            //Log.e("BlockRenderer", "Mesh is null");
             return;
         }
 
         shader.bind();
+
         mesh.bind();
         mesh.enableAttributes();;
 
@@ -74,9 +58,6 @@ public class BlockRenderer {
             Matrix4f model = data.getBlockMatrix(i);
 
             if(model != null){
-
-                randomizeColor(i);
-
                 MathUtil.calculateMVP(mvp, model, view, projection);
 
                 shader.getMVP().set(mvp);

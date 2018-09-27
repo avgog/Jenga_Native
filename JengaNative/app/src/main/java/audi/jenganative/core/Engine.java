@@ -52,6 +52,8 @@ public class Engine {
             glGameData.setBlockMatrix(i, blocks.get(i).getMatrix());
         }
 
+        glGameData.setGroundMatrix(game.ground.getMatrix());
+
         gl.gameData = glGameData;
     }
 

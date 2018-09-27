@@ -9,10 +9,15 @@ public final class Constants {
     public static final int FLOAT_SIZE = 4;
     public static final int SHORT_SIZE = 2;
 
-    //background
+    //background color
     public static final float BG_R = 0.8962264f;
     public static final float BG_G = 0.5634807f;
     public static final float BG_B = 0.06341223f;
+
+    //Ground material color
+    public static final float GR_R = 0.3f;
+    public static final float GR_G = 0.3f;
+    public static final float GR_B = 0.3f;
 
     //mesh paths
     public static final String MESH_BLOCK_PATH = "meshes/JengaBlock.obj";

@@ -43,4 +43,19 @@ public class MeshData {
     public Vertex[] getVertices(){
         return vertices;
     }
+
+    public static MeshData createQuad(){
+        Vector3 f = new Vector3(0, 1, 0); //forward
+        Vertex[] vertices = {
+                new Vertex(new Vector3(-0.5f,0.5f,0), new Vector2(0, 0), f.copy()), //Top left
+                new Vertex(new Vector3(-0.5f,-0.5f,0), new Vector2(0, 1), f.copy()), //Bottom left
+                new Vertex(new Vector3(0.5f,0.5f,0), new Vector2(1, 0), f.copy()), //Top Right
+                new Vertex(new Vector3(0.5f,0.5f,0), new Vector2(1, 0), f.copy()), //Top right
+                new Vertex(new Vector3(-0.5f,-0.5f,0), new Vector2(0, 1), f.copy()), //Bottom left
+                new Vertex(new Vector3(0.5f,-0.5f,0), new Vector2(1, 1), f.copy()) //Bottom right
+        };
+
+        MeshData data = new MeshData(vertices);
+        return data;
+    }
 }

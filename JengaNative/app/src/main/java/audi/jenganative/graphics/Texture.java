@@ -14,33 +14,6 @@ import java.nio.Buffer;
 public class Texture {
     private int textureId[] = {0};
 
-    /*public Texture(int width, int height, int internalFormat, int dataFormat, int dataType, Buffer buffer){
-        try{
-            GLES30.glGenTextures(GLES30.GL_TEXTURE_2D, textureId, 0);
-
-            bind();
-
-            GLES30.glTexImage2D(
-                    GLES30.GL_TEXTURE_2D,
-                    0, //mipmap level
-                    internalFormat,
-                    width,
-                    height,
-                    0, //border
-                    dataFormat,
-                    dataType,
-                    buffer
-            );
-
-            GLES30.glTexParameteri(GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_MAG_FILTER, GLES30.GL_LINEAR);
-            GLES30.glTexParameteri(GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_MIN_FILTER, GLES30.GL_LINEAR_MIPMAP_LINEAR);
-            GLES30.glGenerateMipmap(GLES30.GL_TEXTURE_2D);
-        }
-        catch (Exception e){
-            Log.i("texture", e.getMessage());
-        }
-    }*/
-
     public Texture(Bitmap bitmap){
         GLES30.glGenTextures(1, textureId, 0);
 

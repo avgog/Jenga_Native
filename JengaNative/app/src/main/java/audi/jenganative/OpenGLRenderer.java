@@ -15,9 +15,12 @@ import audi.jenganative.graphics.Camera;
 import audi.jenganative.graphics.Mesh;
 import audi.jenganative.graphics.Texture;
 import audi.jenganative.graphics.renderers.BlockRenderer;
+import audi.jenganative.graphics.renderers.GroundRenderer;
+import audi.jenganative.graphics.shaders.ColorShader;
 import audi.jenganative.graphics.shaders.DiffuseShader;
 import audi.jenganative.math.Vector2;
 import audi.jenganative.math.Vector3;
+import audi.jenganative.resources.FileUtil;
 import audi.jenganative.resources.GLGameData;
 import audi.jenganative.resources.GLResources;
 import audi.jenganative.resources.MeshData;
@@ -29,11 +32,17 @@ import audi.jenganative.resources.MeshData;
 
 
 public class OpenGLRenderer implements GLSurfaceView.Renderer {
+    //BLOCK
     private Mesh mesh;
     private DiffuseShader shader;
     private Camera camera;
     private BlockRenderer renderer;
     private Texture texture;
+
+    //GROUND
+    private Mesh groundMesh;
+    private ColorShader groundShader;
+    private GroundRenderer groundRenderer;
 
     public GLGameData gameData = new GLGameData();
 
@@ -66,17 +75,15 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer {
         GLES30.glEnable(GLES30.GL_DEPTH_TEST);
         //GLES30.glBlendFunc(GLES30.GL_BLEND_SRC_ALPHA, GLES30.GL_ONE_MINUS_SRC_ALPHA);
 
-        GLES30.glEnable(GLES30.GL_TEXTURE0);
+        //GLES30.glEnable(GLES30.GL_TEXTURE0);
 
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.block);
-        texture = new Texture(bitmap);
-        GLES30.glActiveTexture(GLES30.GL_TEXTURE0);
-        texture.bind();
-
+        texture = new Texture(resources.blockBitmap);
         mesh = new Mesh(resources.blockMeshData);
+        shader = new DiffuseShader(resources.vertexShaderCode, resources.fragmentShaderCode, texture);
 
-
-        shader = new DiffuseShader(resources.vertexShaderCode, resources.fragmentShaderCode);
+        groundMesh = new Mesh(MeshData.createQuad());
+        groundShader = new ColorShader(resources.colorVertexCode, resources.colorFragmentCode);
+        groundRenderer = new GroundRenderer(groundShader, groundMesh);
 
         if(shader.getMessage() != null){
             Log.e(CLog.SHADER, shader.getMessage());
@@ -93,6 +100,7 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer {
 
         if(gameData != null){
             renderer.render(gameData);
+            groundRenderer.render(camera, gameData.getGroundMatrix());
         }
     }
 

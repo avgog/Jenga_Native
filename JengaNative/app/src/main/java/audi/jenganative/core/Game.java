@@ -16,6 +16,7 @@ import audi.jenganative.math.Vector3;
 
 public class Game {
     public List<Transform> blocks = new ArrayList<>();
+    public Transform ground = new Transform(new Vector3(0,-Constants.BLOCK_LENGTH / 2,0), Quaternion.eulerAngles(0,90, 0), new Vector3(5, 5, 1));
 
     private int count = 0;
     public Game(){

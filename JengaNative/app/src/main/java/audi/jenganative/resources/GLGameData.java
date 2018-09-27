@@ -11,6 +11,7 @@ import java.util.List;
 
 public class GLGameData {
     private List<Matrix4f> blockMatrices = new ArrayList<>();
+    private Matrix4f groundMatrix = new Matrix4f();
 
     public GLGameData(){
 
@@ -36,4 +37,12 @@ public class GLGameData {
         return blockMatrices.size();
     }
 
+
+    public Matrix4f getGroundMatrix() {
+        return groundMatrix;
+    }
+
+    public void setGroundMatrix(Matrix4f mat){
+        groundMatrix = new Matrix4f(mat.getArray());
+    }
 }

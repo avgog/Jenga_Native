@@ -16,11 +16,23 @@ public class TextureProperty {
     public TextureProperty(int textureSlot){
         location = GLES30.GL_TEXTURE0 + textureSlot;
         GLES30.glEnable(location);
+        GLES30.glActiveTexture(location);
     }
 
     public void set(Texture texture) {
-        GLES30.glActiveTexture(location);
         this.texture = texture;
+    }
+
+    public void bind(){
+        if(texture != null){
+            texture.bind();
+        }
+    }
+
+    public void unbind(){
+        if(texture != null){
+            texture.unbind();
+        }
     }
 
     public Texture get(){
