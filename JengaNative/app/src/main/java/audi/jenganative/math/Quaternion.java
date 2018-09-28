@@ -95,7 +95,7 @@ public class Quaternion {
         return new Quaternion(0, 0, 0, 1);
     }
 
-    public Quaternion setEulerAngles (float yaw, float pitch, float roll) {
+    /*public Quaternion setEulerAngles (float yaw, float pitch, float roll) {
         return setEulerAnglesRad(
                 yaw * MathUtil.degreesToRadians,
                 pitch * MathUtil.degreesToRadians,
@@ -124,7 +124,7 @@ public class Quaternion {
         return this;
     }
 
-    public Vector3 toEulerAngle() {
+    public Vector3 toEulerAngles() {
         Vector3 eulers = new Vector3();
 
         // roll (x-axis rotation)
@@ -144,7 +144,7 @@ public class Quaternion {
         double cosy = +1.0 - 2.0 * (y * y + z * z);
         eulers.z = (float)atan2(siny, cosy);
         return eulers;
-    }
+    }*/
 
     public static Quaternion eulerAngles(float x, float y, float z){
         Quaternion q = Quaternion.identity();
@@ -155,4 +155,150 @@ public class Quaternion {
     public Quaternion copy(){
         return new Quaternion(x, y, z, w);
     }
+
+    public static Vector3 multiplyVector(Quaternion rotation, Vector3 pos) {
+        float x = rotation.x * 2f;
+        float y = rotation.y * 2f;
+        float z = rotation.z * 2f;
+        float xx = rotation.x * x;
+        float yy = rotation.y * y;
+        float zz = rotation.z * z;
+        float xy = rotation.x * y;
+        float xz = rotation.x * z;
+        float yz = rotation.y * z;
+        float wx = rotation.w * x;
+        float wy = rotation.w * y;
+        float wz = rotation.w * z;
+
+        Vector3 result = new Vector3(
+                (1f - (yy + zz)) * pos.x + (xy - wz) * pos.y + (xz + wy) * pos.z,
+                (xy + wz) * pos.x + (1f - (xx + zz)) * pos.y + (yz - wx) * pos.z,
+                (xz - wy) * pos.x + (yz + wx) * pos.y + (1f - (xx + yy)) * pos.z
+        );
+        return result;
+    }
+
+    //source link: https://answers.unity.com/questions/467614/what-is-the-source-code-of-quaternionlookrotation.html
+    public static Quaternion lookRotation(Vector3 forward, Vector3 up) {
+        Vector3 vector = forward.normal();
+        Vector3 vector2 = (Vector3.cross(up, vector)).normal();
+        Vector3 vector3 = Vector3.cross(vector, vector2);
+
+        float m00 = vector2.x;
+        float m01 = vector2.y;
+        float m02 = vector2.z;
+        float m10 = vector3.x;
+        float m11 = vector3.y;
+        float m12 = vector3.z;
+        float m20 = vector.x;
+        float m21 = vector.y;
+        float m22 = vector.z;
+
+
+        float num8 = (m00 + m11) + m22;
+        Quaternion quaternion = new Quaternion(0,0,0,0);
+        if (num8 > 0f)
+        {
+            float num = (float)Math.sqrt(num8 + 1f);
+            quaternion.w = num * 0.5f;
+            num = 0.5f / num;
+            quaternion.x = (m12 - m21) * num;
+            quaternion.y = (m20 - m02) * num;
+            quaternion.z = (m01 - m10) * num;
+            return quaternion;
+        }
+        if ((m00 >= m11) && (m00 >= m22))
+        {
+            float num7 = (float)Math.sqrt(((1f + m00) - m11) - m22);
+            float num4 = 0.5f / num7;
+            quaternion.x = 0.5f * num7;
+            quaternion.y = (m01 + m10) * num4;
+            quaternion.z = (m02 + m20) * num4;
+            quaternion.w = (m12 - m21) * num4;
+            return quaternion;
+        }
+        if (m11 > m22)
+        {
+            float num6 = (float)Math.sqrt(((1f + m11) - m00) - m22);
+            float num3 = 0.5f / num6;
+            quaternion.x = (m10+ m01) * num3;
+            quaternion.y = 0.5f * num6;
+            quaternion.z = (m21 + m12) * num3;
+            quaternion.w = (m20 - m02) * num3;
+            return quaternion;
+        }
+        float num5 = (float)Math.sqrt(((1f + m22) - m00) - m11);
+        float num2 = 0.5f / num5;
+        quaternion.x = (m20 + m02) * num2;
+        quaternion.y = (m21 + m12) * num2;
+        quaternion.z = 0.5f * num5;
+        quaternion.w = (m01 - m10) * num2;
+        return quaternion;
+    }
+
+    //TEMP
+
+    public Quaternion setEulerAngles(float xAngle, float yAngle, float zAngle) {
+        xAngle *= MathUtil.degreesToRadians;
+        yAngle *= MathUtil.degreesToRadians;
+        zAngle *= MathUtil.degreesToRadians;
+
+        float angle;
+        float sinY, sinZ, sinX, cosY, cosZ, cosX;
+        angle = zAngle * 0.5f;
+        sinZ = (float)Math.sin(angle);
+        cosZ = (float)Math.cos(angle);
+        angle = yAngle * 0.5f;
+        sinY = (float)Math.sin(angle);
+        cosY = (float)Math.cos(angle);
+        angle = xAngle * 0.5f;
+        sinX = (float)Math.sin(angle);
+        cosX = (float)Math.cos(angle);
+
+        // variables used to reduce multiplication calls.
+        float cosYXcosZ = cosY * cosZ;
+        float sinYXsinZ = sinY * sinZ;
+        float cosYXsinZ = cosY * sinZ;
+        float sinYXcosZ = sinY * cosZ;
+
+        w = (cosYXcosZ * cosX - sinYXsinZ * sinX);
+        x = (cosYXcosZ * sinX + sinYXsinZ * cosX);
+        y = (sinYXcosZ * cosX + cosYXsinZ * sinX);
+        z = (cosYXsinZ * cosX - sinYXcosZ * sinX);
+
+        //normalizeLocal();
+        return this;
+    }
+
+    public Vector3 toEulerAngles() {
+        float[] angles = {0,0,0};
+
+        float sqw = w * w;
+        float sqx = x * x;
+        float sqy = y * y;
+        float sqz = z * z;
+        float unit = sqx + sqy + sqz + sqw; // if normalized is one, otherwise
+        // is correction factor
+        float test = x * y + z * w;
+        if (test > 0.499 * unit) { // singularity at north pole
+            angles[1] = 2 * (float)Math.atan2(x, w);
+            angles[2] = (float)Math.PI / 2;
+            angles[0] = 0;
+        } else if (test < -0.499 * unit) { // singularity at south pole
+            angles[1] = -2 * (float)Math.atan2(x, w);
+            angles[2] = -(float)Math.PI / 2;
+            angles[0] = 0;
+        } else {
+            angles[1] = (float)Math.atan2(2 * y * w - 2 * x * z, sqx - sqy - sqz + sqw); // yaw or heading
+            angles[2] = (float)Math.asin(2 * test / unit); // roll or bank
+            angles[0] = (float)Math.atan2(2 * x * w - 2 * y * z, -sqx + sqy - sqz + sqw); // pitch or attitude
+        }
+
+        for(int i = 0; i < angles.length; i++){
+            angles[i] = angles[i] * MathUtil.radiansToDegrees;
+        }
+        return new Vector3(angles[0], angles[1], angles[2]);
+    }
+
+
 }

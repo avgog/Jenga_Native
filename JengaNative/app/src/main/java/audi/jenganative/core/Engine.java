@@ -8,7 +8,9 @@ import android.util.Log;
 import java.util.List;
 
 import audi.jenganative.OpenGLRenderer;
+import audi.jenganative.OpenGLView;
 import audi.jenganative.components.Transform;
+import audi.jenganative.game.Game;
 import audi.jenganative.resources.GLGameData;
 import audi.jenganative.resources.GLResources;
 
@@ -40,6 +42,7 @@ public class Engine {
         initGraphics(context, resources);
 
         game = new Game();
+        glGameData.camera = game.getMainCamera();
     }
 
 
@@ -92,7 +95,7 @@ public class Engine {
 
     private void initGraphics(Context context, GLResources resources){
 
-        glView = new GLSurfaceView(context);
+        glView = new OpenGLView(context);
         glView.setEGLContextClientVersion(3);
 
         gl = new OpenGLRenderer(context, resources);

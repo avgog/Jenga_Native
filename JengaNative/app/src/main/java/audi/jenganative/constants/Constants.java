@@ -1,5 +1,8 @@
 package audi.jenganative.constants;
 
+import audi.jenganative.math.Vector3;
+import audi.jenganative.math.Vector4;
+
 /**
  * Created by audi on 5-8-2018.
  */
@@ -15,9 +18,9 @@ public final class Constants {
     public static final float BG_B = 0.06341223f;
 
     //Ground material color
-    public static final float GR_R = 0.3f;
-    public static final float GR_G = 0.3f;
-    public static final float GR_B = 0.3f;
+    public static final float GR_R = 0.4f;
+    public static final float GR_G = 0.4f;
+    public static final float GR_B = 0.4f;
 
     //mesh paths
     public static final String MESH_BLOCK_PATH = "meshes/JengaBlock.obj";
@@ -39,4 +42,19 @@ public final class Constants {
     public static final float BLOCK_HEIGHT = 0.3f;
     public static final float BLOCK_WIDTH = 0.5f;
 
+    //Ground size;
+    public static final Vector3 GROUND_SIZE = new Vector3(10, 10, 1);
+    //Input
+    public static final float TOUCH_SENSITIVITY = 0.5f;
+
+    //Camera
+    public static final Vector3 CAM_START_POS = new Vector3(6,4,5);
+    public static final Vector3 CAM_TARGET_POS = new Vector3(0, 2, 0);
+    public static final float CAM_MIN_ANGLE_Y = -70;
+    public static final float CAM_MAX_ANGLE_Y = 45;
+    public static final boolean CAM_MOVE_INVERT_X = true;
+    public static final boolean CAM_MOVE_INVERT_Y = true;
+
+    //outline
+    private static final Vector4 OUTLINE_COLOR = new Vector4(0,0,0,0);
 }

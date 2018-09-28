@@ -25,13 +25,13 @@ public class BlockRenderer {
     private Mesh mesh = null;
     private Camera camera;
 
-    public BlockRenderer(DiffuseShader shader, Mesh mesh, Camera camera){
+    public BlockRenderer(DiffuseShader shader, Mesh mesh){
         this.shader = shader;
         this.mesh = mesh;
         this.camera = camera;
     }
 
-    public void render(GLGameData data) {
+    public void render(GLGameData data, Camera camera) {
         if(shader == null){
             //Log.e("BlockRenderer", "Shader is null");
             return;

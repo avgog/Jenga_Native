@@ -31,11 +31,11 @@ import audi.jenganative.resources.MeshData;
 
 
 
-public class OpenGLRenderer implements GLSurfaceView.Renderer {
+public class OpenGLRenderer implements OpenGLView.Renderer {
     //BLOCK
     private Mesh mesh;
     private DiffuseShader shader;
-    private Camera camera;
+    //private Camera camera;
     private BlockRenderer renderer;
     private Texture texture;
 
@@ -57,7 +57,7 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer {
     public OpenGLRenderer(Context context, GLResources resources) {
         this.context = context;
         this.resources = resources;
-        this.camera = new Camera(new Vector3(4, 3, 3), new Vector3(0, 0, 0));
+        //this.camera = new Camera(new Vector3(4, 3, 3), new Vector3(0, 0, 0));
     }
 
     public boolean isRendering(){
@@ -91,16 +91,16 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer {
 
         shader.bind();
 
-        renderer = new BlockRenderer(shader, mesh, camera);
+        renderer = new BlockRenderer(shader, mesh);
     }
 
     public void draw(){
 
         GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT | GLES30.GL_DEPTH_BUFFER_BIT);
 
-        if(gameData != null){
-            renderer.render(gameData);
-            groundRenderer.render(camera, gameData.getGroundMatrix());
+        if(gameData != null && gameData.camera != null){
+            renderer.render(gameData, gameData.camera);
+            groundRenderer.render(gameData.camera, gameData.getGroundMatrix());
         }
     }
 

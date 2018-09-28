@@ -113,6 +113,37 @@ public class Vector3 {
         );
     }
 
+    public float length(){
+        float x = this.x;
+        float y = this.y;
+        float z = this.z;
+        float dist = (float)Math.sqrt((double)(x * x + y * y + z * z));
+        return dist;
+    }
+
+    public Vector3 normal(){
+        float length = length();
+
+        if(length == 0){
+            return new Vector3(0, 0, 1);
+        }
+
+        return new Vector3(
+            this.x / length,
+            this.y / length,
+            this.z / length
+        );
+    }
+
+    //a = left vector
+    //b = right vector
+    public static Vector3 cross(Vector3 a, Vector3 b)
+    {
+        return new Vector3(
+                a.y * b.z - a.z * b.y,
+                a.z * b.x - a.x * b.z,
+                a.x * b.y - a.y * b.x);
+    }
 
     @Override
     public String toString() {

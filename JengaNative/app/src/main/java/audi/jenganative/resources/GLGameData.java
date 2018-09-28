@@ -5,6 +5,8 @@ import android.renderscript.Matrix4f;
 import java.util.ArrayList;
 import java.util.List;
 
+import audi.jenganative.graphics.Camera;
+
 /**
  * Created by audi on 5-8-2018.
  */
@@ -12,6 +14,7 @@ import java.util.List;
 public class GLGameData {
     private List<Matrix4f> blockMatrices = new ArrayList<>();
     private Matrix4f groundMatrix = new Matrix4f();
+    public Camera camera;
 
     public GLGameData(){
 

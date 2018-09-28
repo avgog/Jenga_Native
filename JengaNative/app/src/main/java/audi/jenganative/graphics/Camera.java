@@ -15,9 +15,9 @@ public class Camera {
     public float near = 0.01f;
     public float far = 1000.0f;
 
-    public Vector3 position;
-    public Vector3 target;
-    public Vector3 up = new Vector3(0, 1, 0);
+    protected Vector3 position;
+    protected Vector3 target;
+    protected Vector3 up = new Vector3(0, 1, 0);
 
     public Camera(Vector3 position, Vector3 target){
         this.position = position;
