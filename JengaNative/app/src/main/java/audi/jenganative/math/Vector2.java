@@ -24,6 +24,9 @@ public class Vector2 {
         return new Vector2(x, y);
     }
 
+    public Vector2 inverse(){
+        return new Vector2(-x, -y);
+    }
     @Override
     public String toString() {
         return "["+x+", "+y+"]";

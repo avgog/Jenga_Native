@@ -113,18 +113,6 @@ public class Transform {
 
 
     private void recalculateMatrix(Matrix4f temp){
-        /*
-        //Scale
-        matrix.loadScale(scale.x, scale.y, scale.z);
-
-        //Rotation
-        rotation.toMatrix(temp);
-        matrix.multiply(temp);
-
-        //Position
-        temp.loadTranslate(position.x, position.y, position.z);
-        matrix.multiply(temp);
-        */
 
         matrix.loadTranslate(position.x, position.y, position.z);
         rotation.toMatrix(temp);

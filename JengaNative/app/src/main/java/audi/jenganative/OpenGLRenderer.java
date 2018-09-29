@@ -1,26 +1,18 @@
 package audi.jenganative;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.opengl.GLES30;
-import android.opengl.GLSurfaceView;
 import android.util.Log;
 
 import javax.microedition.khronos.opengles.GL10;
 
 import audi.jenganative.constants.CLog;
 import audi.jenganative.constants.Constants;
-import audi.jenganative.graphics.Camera;
 import audi.jenganative.graphics.Mesh;
 import audi.jenganative.graphics.Texture;
 import audi.jenganative.graphics.renderers.BlockRenderer;
 import audi.jenganative.graphics.renderers.GroundRenderer;
 import audi.jenganative.graphics.shaders.ColorShader;
 import audi.jenganative.graphics.shaders.DiffuseShader;
-import audi.jenganative.math.Vector2;
-import audi.jenganative.math.Vector3;
-import audi.jenganative.resources.FileUtil;
 import audi.jenganative.resources.GLGameData;
 import audi.jenganative.resources.GLResources;
 import audi.jenganative.resources.MeshData;
@@ -33,11 +25,12 @@ import audi.jenganative.resources.MeshData;
 
 public class OpenGLRenderer implements OpenGLView.Renderer {
     //BLOCK
-    private Mesh mesh;
-    private DiffuseShader shader;
-    //private Camera camera;
-    private BlockRenderer renderer;
-    private Texture texture;
+    private Mesh blockMesh;
+    private Mesh blockOutlineMesh;
+    private DiffuseShader blockDiffuseShader;
+    private ColorShader blockOutlineShader;
+    private BlockRenderer blockRenderer;
+    private Texture blockTexture;
 
     //GROUND
     private Mesh groundMesh;
@@ -73,25 +66,26 @@ public class OpenGLRenderer implements OpenGLView.Renderer {
         GLES30.glEnable(GLES30.GL_CULL_FACE);
         GLES30.glEnable(GLES30.GL_BLEND);
         GLES30.glEnable(GLES30.GL_DEPTH_TEST);
-        //GLES30.glBlendFunc(GLES30.GL_BLEND_SRC_ALPHA, GLES30.GL_ONE_MINUS_SRC_ALPHA);
+        GLES30.glBlendFunc(GLES30.GL_BLEND_SRC_ALPHA, GLES30.GL_ONE_MINUS_SRC_ALPHA);
 
-        //GLES30.glEnable(GLES30.GL_TEXTURE0);
 
-        texture = new Texture(resources.blockBitmap);
-        mesh = new Mesh(resources.blockMeshData);
-        shader = new DiffuseShader(resources.vertexShaderCode, resources.fragmentShaderCode, texture);
+        blockTexture = new Texture(resources.blockBitmap);
+        blockMesh = new Mesh(resources.blockMeshData.getVertices());
+        blockOutlineMesh = Mesh.createOutlineMesh(resources.blockMeshData);
+        blockDiffuseShader = new DiffuseShader(resources.vertexShaderCode, resources.fragmentShaderCode, blockTexture);
+        blockOutlineShader = new ColorShader(resources.colorVertexCode, resources.colorFragmentCode);
 
-        groundMesh = new Mesh(MeshData.createQuad());
+        groundMesh = new Mesh(MeshData.createQuad().getVertices());
         groundShader = new ColorShader(resources.colorVertexCode, resources.colorFragmentCode);
         groundRenderer = new GroundRenderer(groundShader, groundMesh);
 
-        if(shader.getMessage() != null){
-            Log.e(CLog.SHADER, shader.getMessage());
+        if(blockDiffuseShader.getMessage() != null){
+            Log.e(CLog.SHADER, blockDiffuseShader.getMessage());
         }
 
-        shader.bind();
+        blockDiffuseShader.bind();
 
-        renderer = new BlockRenderer(shader, mesh);
+        blockRenderer = new BlockRenderer(blockDiffuseShader, blockOutlineShader, blockMesh, blockOutlineMesh);
     }
 
     public void draw(){
@@ -99,7 +93,7 @@ public class OpenGLRenderer implements OpenGLView.Renderer {
         GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT | GLES30.GL_DEPTH_BUFFER_BIT);
 
         if(gameData != null && gameData.camera != null){
-            renderer.render(gameData, gameData.camera);
+            blockRenderer.render(gameData, gameData.camera);
             groundRenderer.render(gameData.camera, gameData.getGroundMatrix());
         }
     }

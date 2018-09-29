@@ -25,4 +25,11 @@ public class MathUtil {
         }
         return val;
     }
+
+    public static float normal(float val){
+        if(val < 0){
+            return -1;
+        }
+        return 1;
+    }
 }
