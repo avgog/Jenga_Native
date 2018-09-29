@@ -16,6 +16,11 @@ public class MathUtil {
         out_mvp.multiply(model);
     }
 
+    public static void calculateMV(Matrix4f out_mvp, Matrix4f model, Matrix4f view){
+        out_mvp.load(view);
+        out_mvp.multiply(model);
+    }
+
     public static float clamp(float val, float min, float max){
         if(val < min){
             return min;

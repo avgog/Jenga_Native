@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import audi.jenganative.graphics.Camera;
+import audi.jenganative.math.Vector3;
 
 /**
  * Created by audi on 5-8-2018.
@@ -13,6 +14,8 @@ import audi.jenganative.graphics.Camera;
 
 public class GLGameData {
     private List<Matrix4f> blockMatrices = new ArrayList<>();
+    public List<Vector3> blockDirections = new ArrayList<>();
+
     private Matrix4f groundMatrix = new Matrix4f();
     public Camera camera;
 
@@ -47,5 +50,15 @@ public class GLGameData {
 
     public void setGroundMatrix(Matrix4f mat){
         groundMatrix = new Matrix4f(mat.getArray());
+    }
+
+    public void setBlockDirection(int index, Vector3 dir){
+        dir = dir.normal();
+        if(blockDirections.size() <= index){
+            blockDirections.add(dir.copy());
+        }
+        else{
+            blockDirections.set(index, dir.copy());
+        }
     }
 }

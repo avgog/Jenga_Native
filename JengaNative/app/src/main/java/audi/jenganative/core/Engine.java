@@ -11,6 +11,8 @@ import audi.jenganative.OpenGLRenderer;
 import audi.jenganative.OpenGLView;
 import audi.jenganative.components.Transform;
 import audi.jenganative.game.Game;
+import audi.jenganative.math.Quaternion;
+import audi.jenganative.math.Vector3;
 import audi.jenganative.resources.GLGameData;
 import audi.jenganative.resources.GLResources;
 
@@ -53,6 +55,10 @@ public class Engine {
         int length = blocks.size();
         for(int i = 0; i < length; i++){
             glGameData.setBlockMatrix(i, blocks.get(i).getMatrix());
+
+            Quaternion rot = blocks.get(i).getRotation();
+            Vector3 forward = Quaternion.multiplyVector(rot, new Vector3(0,0,1));
+            glGameData.setBlockDirection(i, forward);
         }
 
         glGameData.setGroundMatrix(game.ground.getMatrix());

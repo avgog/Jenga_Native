@@ -10,6 +10,7 @@ import audi.jenganative.graphics.Vertex;
 import audi.jenganative.graphics.shaders.ColorShader;
 import audi.jenganative.graphics.shaders.DiffuseShader;
 import audi.jenganative.math.MathUtil;
+import audi.jenganative.math.Vector3;
 import audi.jenganative.resources.GLGameData;
 import audi.jenganative.resources.MeshData;
 
@@ -46,7 +47,7 @@ public class BlockRenderer {
         Matrix4f view = camera.getView();
 
         Matrix4f mvp = new Matrix4f();
-
+        Matrix4f mv = new Matrix4f();
 
         int length = data.getBlockMatrixLength();
 
@@ -60,8 +61,10 @@ public class BlockRenderer {
 
             if(model != null){
                 MathUtil.calculateMVP(mvp, model, view, projection);
+                MathUtil.calculateMV(mv, model, view);
 
                 diffuseShader.getMVP().set(mvp);
+                diffuseShader.getMV().set(model);
 
                 mesh.drawInstance();
             }
@@ -74,7 +77,7 @@ public class BlockRenderer {
         //draw outline mesh
         outlineShader.bind();
         outlineMesh.bind();
-        outlineMesh.enableAttributes();;
+        outlineMesh.enableAttributes();
         GLES30.glCullFace(GLES30.GL_FRONT);
 
         outlineShader.getColor().set(Constants.OUTLINE_COLOR);
